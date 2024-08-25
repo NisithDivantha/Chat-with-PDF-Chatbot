@@ -1,4 +1,4 @@
-# Chat-with-PDF-Chatbot
+# Chat-with-PDF-Chatbot 🤖
 
 ## Overview
 
@@ -10,7 +10,15 @@ This project implements a chatbot capable of querying PDF documents using Retrie
 - **RAG-based Querying**: Utilize Retrieval-Augmented Generation to generate accurate and context-aware responses.
 - **Optimized LLM Outputs**: The system is designed to provide the most relevant answers using state-of-the-art LLMs.
 
-## Setup
+## Used Technologies
+
+- **LangChain**: For text splitting, document processing, and managing interactions with LLMs.
+- **Google Generative AI**: For generating embeddings and processing user queries.
+- **Chroma**: As the vector database for storing and retrieving document embeddings.
+- **Streamlit**: For creating the user interface, allowing PDF uploads and chat interactions.
+- **Python**: The core programming language used for backend development.
+
+## Setup ⚙️
 
 To get started, follow these steps to set up your environment and install the necessary dependencies:
 
