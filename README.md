@@ -4,6 +4,10 @@
 
 This project implements a chatbot capable of querying PDF documents using Retrieval-Augmented Generation (RAG) to provide optimized responses from a Large Language Model (LLM). The chatbot also includes a user-friendly interface that allows users to upload PDFs and interact with the system through chat.
 
+
+https://github.com/user-attachments/assets/b21b5f8d-e5cd-4d54-95b1-105791a95320
+
+
 ## Features
 
 - **PDF Upload**: Users can upload PDFs through the interface.
