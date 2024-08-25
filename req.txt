@@ -1,0 +1,5 @@
+pip install -qU langchain-text-splitters
+pip install -q -U google-generativeai
+pip install --upgrade --quiet  langchain-google-genai
+pip install chromadb
+pip install -U langchain-chroma
