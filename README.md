@@ -18,7 +18,7 @@ This project implements a chatbot capable of querying PDF documents using Retrie
 - **Streamlit**: For creating the user interface, allowing PDF uploads and chat interactions.
 - **Python**: The core programming language used for backend development.
 
-## Setup ⚙️
+## Setup 
 
 To get started, follow these steps to set up your environment and install the necessary dependencies:
 
