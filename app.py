@@ -8,28 +8,57 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.prompts import ChatPromptTemplate
 from langchain_google_genai import GoogleGenerativeAI
 from fill_database import process_pdf
-
+from langchain.schema import Document 
 from env import API_KEY
 os.environ['GOOGLE_API_KEY'] = API_KEY
 
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+You are a helpful assistant. Answer the following question based on the provided context:
 
 {context}
 
----
-
 Answer the question based on the above context: {question}
 """
+
+
+import hashlib
+
+def generate_pdf_identifier(pdf_file):
+    file_hash = hashlib.md5(pdf_file.getbuffer()).hexdigest()
+    return file_hash
+
+def process_pdf_once(uploaded_file):
+    CHROMA_PATH = "chroma"
+    pdf_identifier = generate_pdf_identifier(uploaded_file)
+    
+    # Check if the database exists
+    if os.path.exists(CHROMA_PATH):
+        db = Chroma(persist_directory=CHROMA_PATH)
+        
+        # Check if the PDF identifier is already in the database
+        all_docs = db._collection.get()["documents"]
+        if pdf_identifier in all_docs:
+            print("PDF already processed. Skipping.")
+            return
+    else:
+        os.makedirs(CHROMA_PATH)
+    
+    # If not found, process the PDF
+    process_pdf(uploaded_file)
+    
+    # Save the identifier to the database
+    # db.add_documents([Document(page_content="PDF processed", metadata={"identifier": pdf_identifier})])
+    # print("PDF processed and saved.")
+
 
 st.title("Chat with PDF")
 uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
 
 if uploaded_file is not None:
     st.write("Processing the uploaded file...")
-    process_pdf(uploaded_file)
+    process_pdf_once(uploaded_file)
     st.success("File processed and saved to the Chroma database.")
 
 if "messages" not in st.session_state:
@@ -42,11 +71,13 @@ for message in st.session_state.messages:
 def response_generator(prompt):
     embedding_function = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    normalized_prompt = prompt.lower()
 
-    results = db.similarity_search_with_score(prompt,  k = 3)
-    # print(results)
+    print("prompt", prompt)
+    results = db.similarity_search_with_score(normalized_prompt,  k = 10)
+    print(results)
 
-    if len(results) == 0:
+    if len(results) == 0 or results[0][1] < 0.5:
         yield "No results found."
 
 
